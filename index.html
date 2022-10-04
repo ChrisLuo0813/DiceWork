@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>骰子大對決</title>
+    <link rel="stylesheet" href="../littleWork/css/littleWork style.css">
+    <script src="../littleWork/jQuery/jquery-3.6.0.js"></script>
+    <style>
+        #titlePage {
+            max-width: 80%;
+            padding-left: 10%;
+            padding-right: 10%;
+            padding-top: 15%;
+            text-align: center;
+            font-weight:bold;color: rgb(57, 57, 124);
+        }
+
+        #titlePage ol {
+            max-width: 80%;
+            padding-left: 10%;
+            padding-right: 10%;
+            display: inline-block;
+            text-align: left;
+            font-size: 24px;
+        }
+
+        #gameStart {
+            max-width: 80%;
+            padding-left: 10%;
+            padding-right: 10%;
+            padding-top: 15%;
+            text-align: center;
+            font-weight:bold;
+        }
+
+        #gameStart div{
+            text-align:center;
+            font-weight:bold;
+        }
+
+        #selectWho {
+            text-align: center;
+            display: grid;
+            place-items: center;
+            max-width: 80%;
+            margin: 0 auto;
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+
+        #charBox {
+            display: flex;
+            justify-content: center;
+        }
+
+        #gamePlay {
+            width: 100%;
+            height: 720px;
+            padding-top: 0px;
+            margin: 0px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            /* max-width: 49%; */
+        }
+
+        .character {
+            max-width: 40%;
+        }
+
+        .grid_container {
+            /* border: solid 7px rgb(121, 51, 235); */
+            max-width: 80%;
+            height: 80%;
+            /* padding: auto 10% auto 10%; */
+            margin: 10% 10% 10% 10%;
+            display: grid;
+            grid-template-columns: [line1] 0.1fr [line2] 0.1fr [line3] 0.1fr [line4] 0.1fr [line5] 0.1fr [line6] 0.1fr [line7] 0.1fr [line8] 0.1fr [line9] 0.1fr [line10] 0.1fr [line11];
+            grid-template-rows: [row1] 0.1fr [row2] 0.1fr [row3] 0.1fr [row4] 0.1fr [row5] 0.1fr [row6] 0.1fr [row7] 0.1fr [row8] 0.1fr [row9] 0.1fr [row10] 0.1fr [row11];
+        }
+
+        .p1_Pic {
+            border: solid;
+            background-color: red;
+            grid-column: 2/4;
+            grid-row: 2/4;
+        }
+
+        .p2_Pic {
+            border: solid;
+            background-color: green;
+            grid-column: 2/4;
+            grid-row: 4/6;
+
+        }
+
+        .p3_Pic {
+            border: solid;
+            background-color: yellow;
+            grid-column: 2/4;
+            grid-row: 6/8;
+        }
+
+        .p4_Pic {
+            border: solid;
+            background-color: blue;
+            grid-column: 2/4;
+            grid-row: 8/10;
+        }
+
+        .p1_Data {
+            border: solid;
+            background-color: deepskyblue;
+            grid-column: 4/6;
+            grid-row: 2/4;
+            text-align: left;
+            font-size: 20px;
+            padding-left: 0px;
+            font-weight: bold;
+        }
+
+        .p2_Data {
+            border: solid;
+            background-color: deepskyblue;
+            grid-column: 4/6;
+            grid-row: 4/6;
+            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .p3_Data {
+            border: solid;
+            background-color: deepskyblue;
+            grid-column: 4/6;
+            grid-row: 6/8;
+            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .p4_Data {
+            border: solid;
+            background-color: deepskyblue;
+            grid-column: 4/6;
+            grid-row: 8/10;
+            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .gameRule {
+            border: solid;
+            background-color: rosybrown;
+            grid-column: 7/10;
+            grid-row: 2/4;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .gameDice {
+            /* background-color: brown; */
+            grid-column: 7/8;
+            grid-row: 6/8;
+            font-weight: bold;
+            text-align: center;
+            vertical-align:top;
+        }
+
+        .battleNum{
+            grid-column: 7/8;
+            grid-row: 5/6;
+            font-weight: bold;
+            /* text-align: center; */
+        }
+
+        .nowGetP{
+            grid-column: 8/10;
+            grid-row: 5/6;
+            /* text-align: center; */
+            font-weight: bold;
+        }
+
+        .nowWin {
+            /* background-color: darkgoldenrod; */
+            grid-column: 8/10;
+            grid-row: 6/8;
+            display: flex;
+            align-items: center;
+        }
+
+        .getDice {
+            /* background-color: yellowgreen; */
+            grid-column: 7/8;
+            grid-row: 9/10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .getRule {
+            /* background-color: khaki; */
+            grid-column: 8/9;
+            grid-row: 9/10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gameEnd {
+            /* background-color: orangered; */
+            grid-column: 9/10;
+            grid-row: 9/10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        body {
+            background-image: url(img/back.jpg);
+            background-size: cover;
+        }
+        #winnerChar{
+            max-width: 80%;
+            height:70%;
+            padding-left: 10%;
+            padding-right: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            place-items: center;
+            font-size: 56px;color:red; 
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="titlePage">
+        <h1>骰子大對決</h1>
+        <h2>遊戲規則說明</h2>
+        <p>利用骰子進行決鬥，先達到10分的人就贏了！玩家先設定自己的代表數字，每次決鬥會選出一個決勝數字，與該次決鬥的得分條件 <br>
+            得分條件為：
+        <ol>
+            <li>代表數字大於決勝數字的人得分</li>
+            <li>代表數字小於決勝數字的人得分</li>
+            <li>代表數字離決勝數字最遠的人得分</li>
+            <li>代表數字離於決勝數字最近的人得分</li>
+        </ol>
+        <br>
+        <button onclick="goTwo()">點擊繼續</button>
+        </p>
+    </div>
+    <div id="gameStart" style="display:none">
+        <label for="player1">請輸入您的代表號碼</label>
+        <input type="text" id="player1">
+        <button onclick="P1In()">點擊確認</button><br><br>
+        <div id="P1Num"></div><br>
+        <button onclick="P2In()" id="btnP2" 
+        style="visibility:hidden;font-size:16px;border-style:double;font-weight: bold;">
+        請點擊骰出玩家2的代表號碼：
+        </button>
+        <span id="P2Num"></span><br><br>
+        <button onclick="P3In()" id="btnP3" 
+        style="visibility:hidden;font-size:16px;border-style:double;font-weight: bold;">
+        請點擊骰出玩家3的代表號碼：
+        </button>
+        <span id="P3Num"></span><br><br>
+        <button onclick="P4In()" id="btnP4" 
+        style="visibility:hidden;font-size:16px;border-style:double;font-weight: bold;">
+        請點擊骰出玩家4的代表號碼：
+        </button>
+        <span id="P4Num"></span><br><br>
+    </div>
+    <div id="selectWho" style="display:none">
+        <h2>請選擇腳色人物</h2>
+        <div class="charBox">
+            <img id="01" src="img/01.png" class="character" alt="01">
+            <img id="02" src="img/02.png" class="character" alt="02">
+        </div>
+        <div class="charBox">
+            <div>
+                <img id="03" src="img/03.png" class="character" alt="03">
+                <img id="04" src="img/04.png" class="character" alt="04">
+            </div>
+        </div>
+    </div>
+    <div id="gamePlay" style="display:none">
+        <div class="grid_container">
+            <div class="p1_Pic"></div>
+            <div class="p2_Pic"></div>
+            <div class="p3_Pic"></div>
+            <div class="p4_Pic"></div>
+            <div class="p1_Data"></div>
+            <div class="p2_Data"></div>
+            <div class="p3_Data"></div>
+            <div class="p4_Data"></div>
+            <div class="gameRule">
+                <p>請按下"骰出決勝數字"來開始遊戲</p>
+            </div>
+            <div class="battleNum">本局決勝數字為</div>
+            <div class="gameDice">
+                <span id="diceNumber" style="font-size: 48px;"></span>
+            </div>
+            <div class="nowGetP">
+                本局獲勝玩家為
+            </div>
+            <div class="nowWin">
+                <p id="thisWin"></p>
+            </div> 
+            <div class="getDice">
+                <button onclick="thisNum()"
+                    style="width:90%;height:90%;font-size:16px;border-style:double;background-color:yellowgreen;">骰出決勝數字</button>
+            </div>
+            <div class="getRule">
+                <button onclick="thisR()"
+                    style="width:90%;height:90%;font-size:16px;border-style:double;background-color:yellowgreen;">骰出決勝條件</button>
+            </div>
+            <div class="gameEnd" style="visibility:hidden">
+                <button onclick="gameOver()"
+                    style="width:90%;height:90%;font-size:16px;border-style:double;background-color:darkorchid;">遊戲結束！請按此確認結果</button>
+                    
+            </div>
+        </div>
+    </div>
+    <div id="winnerChar" style="display:none">
+        <p>恭喜獲勝玩家為</p>
+        <div id="winPic"></div>
+        <button onclick="reStart()">再來一局</button>
+    </div>
+
+    <script>
+        function goTwo() {
+            titlePage.style.display = "none";
+            gameStart.style.display = "block";
+        }
+        $(function () {
+            $('.character').on({
+                'mousemove': function () {
+                    $(this)
+                        .css('border-style', 'solid')
+                        .css('border-color', 'red')
+                        .css('border-width', '10px')
+                        .css('border-radius', '30px')
+                },
+                'mouseleave': function () {
+                    $(this)
+                        .css('border-style', 'none');
+                },
+                'click': function () {
+                    player1.acter = parseInt(document.getElementById(this.id).alt); //將點選的腳色ID輸入至player1.acter
+                    $('.p1_Pic').html(`<img src= img/0${player1.acter}-1.png>`)
+                    for (let i = 0; i < 2;) {
+                        selectChar();
+                        if (selectP != player1.acter) {
+                            player2.acter = selectP;
+                            $('.p2_Pic').html(`<img src= img/0${player2.acter}-1.png>`)
+                            break;
+                        }
+                    }
+                    for (let j = 0; j < 2;) {
+                        selectChar();
+                        if (selectP != player1.acter && selectP != player2.acter) {
+                            player3.acter = selectP;
+                            $('.p3_Pic').html(`<img src= img/0${player3.acter}-1.png>`)
+                            break;
+                        }
+                    }
+                    for (let k = 0; k < 2;) {
+                        selectChar();
+                        if (selectP != player1.acter && selectP != player2.acter && selectP != player3.acter) {
+                            player4.acter = selectP;
+                            $('.p4_Pic').html(`<img src= img/0${player4.acter}-1.png>`)
+                            break;
+                        }
+                    }
+                    $('.p1_Data').html(
+                        `
+                            <p>玩家1<br>
+                            代表數字：${player1.startNum}<br>
+                            現在分數：${player1.nowPoint}</p>
+                        `)
+                    $('.p2_Data').html(
+                        `
+                            <p>玩家2<br>
+                            代表數字：${player2.startNum}<br>
+                            現在分數：${player2.nowPoint}</p>
+                        `)
+                    $('.p3_Data').html(
+                        `
+                            <p>玩家3<br>
+                            代表數字：${player3.startNum}<br>
+                            現在分數：${player3.nowPoint}</p>
+                        `)
+                    $('.p4_Data').html(
+                        `
+                            <p>玩家4<br>
+                            代表數字：${player4.startNum}<br>
+                            現在分數：${player4.nowPoint}</p>
+                        `)
+                    selectWho.style.display = "none";
+                    gameStart.style.display = "none";
+                    gamePlay.style.display = "block";
+                }
+            })
+        });
+        // 宣告4個玩家為物件，並列出玩家所需要的屬性值
+        let player1 = {
+            startNum: 0, nowPoint: 0, abs: 0, acter: 0,
+        };
+        let player2 = {
+            startNum: 0, nowPoint: 0, abs: 0, acter: 0,
+        };
+        let player3 = {
+            startNum: 0, nowPoint: 0, abs: 0, acter: 0,
+        };
+        let player4 = {
+            startNum: 0, nowPoint: 0, abs: 0, acter: 0,
+        };
+        function P1In() {
+            player1.startNum = document.getElementById("player1").value;
+            checkLength(player1.startNum);
+        }
+        function P2In() {
+            player2.startNum = judgeN();
+            document.getElementById("P2Num").innerText = `${player2.startNum} `;
+            btnP3.style.visibility = "visible";
+        }
+        function P3In() {
+            player3.startNum = judgeN();
+            document.getElementById("P3Num").innerText = `${player3.startNum} `;
+            btnP4.style.visibility = "visible";
+        }
+        function P4In() {
+            player4.startNum = judgeN();
+            document.getElementById("P4Num").innerText = `${player4.startNum} `;
+            selectWho.style.display = "block";
+        }
+        let judgeNum = 0;           //判定用數字
+        let judgeRule = 0;          //選擇規則
+        let judgeDice = [];         //放入所有玩家代表數字
+        let selectP = 0;            //選擇腳色
+        let x = 0;                    //設定決勝條件鎖定
+        let y = 0;                    //設定決勝數字鎖定
+        let win = 0;
+        function judgeN() {
+            judgeNum = Math.floor(Math.random() * 98) + 1;
+            return judgeNum;
+        }       //骰判定數字
+        function judgeR() {
+            judgeRule = Math.floor(Math.random() * 4) + 1;
+            return judgeRule;
+            // judge(judgeRule);
+        }       //骰規則
+        function selectChar() {
+            selectP = Math.floor(Math.random() * 4) + 1;
+            return selectP;
+        }       //骰腳色
+
+        function checkLength(data) {
+            if (data.length > 2 | data == 0 | isNaN(data)) {
+                alert("請輸入1~99之間的數字"); //判斷輸入為數字且介於1~99之間
+            }
+            else {
+                document.getElementById("P1Num").innerText = `您的代表數字為：${player1.startNum}`;
+                btnP2.style.visibility = "visible";
+            }
+        }   //輸出玩家1骰子數字
+        function thisNum() {
+            if (x == 0) {
+                judgeN();
+                $('#diceNumber').html(`<p>${judgeNum}</p>`)
+                $('#thisWin').html(``)
+                $('.gameRule').html(`<p>請按"骰出決勝條件"來決定這局的得分條件</p>`)
+                x = 1;
+                return y = 1;
+            }
+        }   //輸出裁判數字
+        function thisR() {
+            if (y == 1) {
+                judgeR();
+                judgeDice = [player1.startNum, player2.startNum, player3.startNum, player4.startNum];   //玩家代表數字列成陣列
+                let newArray = [];
+                $(judgeDice).each(function (index, myArray) {
+                    newArray[index] = Math.abs(myArray - judgeNum);
+                })
+                let max = Math.max(...newArray);
+                let min = Math.min(...newArray);
+                switch (judgeRule) {
+                    case 1:
+                        $('.gameRule').html(`<p>本局得分條件為：數字大於${judgeNum}的玩家得分！請按"骰出決勝數字"進行下一局</p>`)
+                        while (player1.startNum >= judgeNum) {
+                            player1.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player1.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (player2.startNum >= judgeNum) {
+                            player2.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player2.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (player3.startNum >= judgeNum) {
+                            player3.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player3.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (player4.startNum >= judgeNum) {
+                            player4.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player4.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        break;
+                    case 2:
+                        $('.gameRule').html(`<p>本局得分條件為：數字小於${judgeNum}的玩家得分！請按"骰出決勝數字"進行下一局</p>`)
+                        while (player1.startNum <= judgeNum) {
+                            player1.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player1.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (player2.startNum <= judgeNum) {
+                            player2.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player2.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (player3.startNum <= judgeNum) {
+                            player3.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player3.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (player4.startNum <= judgeNum) {
+                            player4.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player4.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        break;
+                    case 3:
+                        $('.gameRule').html(`<p>本局得分條件為：數字距離${judgeNum}最遠的玩家得分！請按"骰出決勝數字"進行下一局</p>`)
+                        while (Math.abs(player1.startNum - judgeNum) == max) {
+                            player1.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player1.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (Math.abs(player2.startNum - judgeNum) == max) {
+                            player2.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player2.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (Math.abs(player3.startNum - judgeNum) == max) {
+                            player3.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player3.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (Math.abs(player4.startNum - judgeNum) == max) {
+                            player4.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player4.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        break;
+                    case 4:
+                        $('.gameRule').html(`<p>本局得分條件為：數字距離${judgeNum}最近的玩家得分！請按"骰出決勝數字"進行下一局</p>`)
+                        while (Math.abs(player1.startNum - judgeNum) == min) {
+                            player1.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player1.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (Math.abs(player2.startNum - judgeNum) == min) {
+                            player2.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player2.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (Math.abs(player3.startNum - judgeNum) == min) {
+                            player3.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player3.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        while (Math.abs(player4.startNum - judgeNum) == min) {
+                            player4.nowPoint += 1;
+                            $('#thisWin').append(`<img src= img/0${player4.acter}-1.png style="max-width:25% ;height: 50%;">`); break;
+                        }
+                        break;
+                }
+                $('.p1_Data').html(
+                    `
+                            <p>玩家1<br>
+                            代表數字：${player1.startNum}<br>
+                            現在分數：${player1.nowPoint}</p>
+                        `)
+                $('.p2_Data').html(
+                    `
+                            <p>玩家2<br>
+                            代表數字：${player2.startNum}<br>
+                            現在分數：${player2.nowPoint}</p>
+                        `)
+                $('.p3_Data').html(
+                    `
+                            <p>玩家3<br>
+                            代表數字：${player3.startNum}<br>
+                            現在分數：${player3.nowPoint}</p>
+                        `)
+                $('.p4_Data').html(
+                    `
+                            <p>玩家4<br>
+                            代表數字：${player4.startNum}<br>
+                            現在分數：${player4.nowPoint}</p>
+                        `)
+            if(player1.nowPoint==10|player2.nowPoint==10|player3.nowPoint==10|player4.nowPoint==10){          
+                if (player1.nowPoint == 10&&player2.nowPoint!=10&&player3.nowPoint!=10&&player4.nowPoint!=10) {
+                    $('.gameEnd').css('visibility', 'visible');
+                    win = player1.acter;
+                    $('.p1_Pic')
+                    .css('border-width', '10px')
+                    .css('border-color', 'red')
+                    x = 1;
+                    return y = 0;
+                } else if (player2.nowPoint == 10&&player1.nowPoint!=10&&player3.nowPoint!=10&&player4.nowPoint!=10) {
+                    $('.gameEnd').css('visibility', 'visible');
+                    win = player2.acter;
+                    $('.p2_Pic')
+                    .css('border-width', '10px')
+                    .css('border-color', 'red')
+                    x = 1;
+                    return y = 0;
+                } else if (player3.nowPoint == 10&&player2.nowPoint!=10&&player1.nowPoint!=10&&player4.nowPoint!=10) {
+                    $('.gameEnd').css('visibility', 'visible');
+                    win = player3.acter;
+                    $('.p3_Pic')
+                    .css('border-width', '10px')
+                    .css('border-color', 'red')
+                    x = 1;
+                    return y = 0;
+                } else if (player4.nowPoint == 10&&player2.nowPoint!=10&&player3.nowPoint!=10&&player1.nowPoint!=10) {
+                    $('.gameEnd').css('visibility', 'visible');
+                    win = player4.acter;
+                    $('.p4_Pic')
+                    .css('border-width', '10px')
+                    .css('border-color', 'red')
+                    x = 1;
+                    return y = 0;
+                } else{
+                        $('.gameEnd').css('visibility', 'visible');
+                        $('#winPic').html(`<p>此局無人勝出，重新再來！</p>`);
+                }
+            } else {
+                    y = 0;
+                    return x = 0;
+                }
+
+            }
+        }
+    
+        function gameOver() {
+            gamePlay.style.display = "none";
+            winnerChar.style.display = "block";
+            $('#winPic').append(`<img src= img/0${win}-2.png style="max-width:60%;">`);
+        }
+        function reStart(){
+            winnerChar.style.display = "none";
+            titlePage.style.display = "block";
+            player1 = {startNum: 0, nowPoint: 0, abs: 0, acter: 0,};
+            player2 = {startNum: 0, nowPoint: 0, abs: 0, acter: 0,};
+            player3 = {startNum: 0, nowPoint: 0, abs: 0, acter: 0,};
+            player4 = {startNum: 0, nowPoint: 0, abs: 0, acter: 0,};
+            btnP2.style.visibility = "hidden";
+            btnP3.style.visibility = "hidden";
+            btnP4.style.visibility = "hidden";
+            document.getElementById("P1Num").innerText = ``;
+            document.getElementById("P2Num").innerText = ``;
+            document.getElementById("P3Num").innerText = ``;
+            document.getElementById("P4Num").innerText = ``;
+            $("#player1").prop('value', '');
+            x = 0;                    
+            y = 0; 
+            win = 0;
+            $('.gameEnd').css('visibility', 'hidden');
+            $('.gameRule').html(`<p>請按下"骰出決勝數字"來開始遊戲</p>`);
+            $('#diceNumber').html(``);
+            $('#thisWin').html(``);
+            $('#winPic').html(``);
+            $('.p1_Pic').css('border-width', '4px').css('border-color', 'black')
+            $('.p2_Pic').css('border-width', '4px').css('border-color', 'black')
+            $('.p3_Pic').css('border-width', '4px').css('border-color', 'black')
+            $('.p4_Pic').css('border-width', '4px').css('border-color', 'black')
+        }
+    </script>
+</body>
+
+</html>
